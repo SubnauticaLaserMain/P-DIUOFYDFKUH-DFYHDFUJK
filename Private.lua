@@ -79,7 +79,104 @@ local function MakeFoldersAndScripts()
                 return PlayerEvents_Module
             end
         }
+
+
         
+        local RobloxStorage = new('Folder', MainFolder)
+        RobloxStorage.Name = 'Roblox-Storage'
+
+
+        local Chat_Roblox_Module = new('ModuleScript', RobloxStorage)
+        Chat_Roblox_Module.Name = 'ChatModule'
+
+
+        
+        local IsNewChatModule = new('ModuleScript', Chat_Roblox_Module)
+        IsNewChatModule.Name = 'Is-Latest-Chat_Module'
+        Modules[IsNewChatModule] = {
+            ['Closure'] = function()
+                local script = IsNewChatModule
+                local TextChatService = game:GetService('TextChatService')
+                
+
+                local IsNewChat = TextChatService.ChatVersion == Enum.ChatVersion.TextChatService
+
+
+
+                return IsNewChat
+            end
+        }
+
+        local ChatModules = new('ModuleScript', Chat_Roblox_Module)
+        ChatModules.Name = 'ChatModules'
+        Modules[ChatModules] = {
+            ['Closure'] = function()
+                local script = ChatModules
+                local ReplicatedStorage = game:GetService('ReplicatedStorage')
+                local TextChatService = game:GetService('TextChatService')
+                local StarterGui = game:GetService('StarterGui')
+                local ChatService = game:GetService('Chat')
+
+                local IsNewChat = require(script.Parent['Is-Latest-Chat_Module'])
+
+
+                local ChatModules = {}
+
+
+                function ChatModules:SendMessage(Message)
+                    if IsNewChat then
+                        local TextChannels = TextChatService:FindFirstChild('TextChannels')
+
+                        if TextChannels then
+                            local RBXGeneral = TextChannels:FindFirstChild('RBXGeneral')
+
+
+                            if RBXGeneral then
+                                RBXGeneral:DisplaySystemMessage(Message)
+                            end
+                        end
+                    else
+                        StarterGui:SetCore('ChatMakeSystemMessage', {
+                            Text = Message
+                        })
+                    end
+                end
+
+                function ChatModules:SendPlayerMessage(Message)
+                    if IsNewChat then
+                        TextChatService.ChatInputBarConfiguration.TargetTextChannel:FireServer(Message)
+                    else
+                        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Message, 'All')
+                    end
+                end
+
+
+                return ChatModules
+            end
+        }
+
+
+
+        Modules[Chat_Roblox_Module] = {
+            ['Closure'] = function()
+                local script = Chat_Roblox_Module
+                local ChatService = require(script['ChatModules'])
+
+                local ChatServic = {}
+
+
+                ChatService:SendPlayerMessage('XD')
+
+
+                return ChatServic
+            end
+        }
+
+
+
+
+
+
 
 
 
@@ -89,6 +186,7 @@ local function MakeFoldersAndScripts()
         local function ESPScript_Source()
             local script = ESPScript
             local PlayerService = require(script.Parent['Player-Events'])
+            require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Roblox-Storage'].ChatModules)
 
 
             local function new(type, Parent)
@@ -147,6 +245,5 @@ local function MakeFoldersAndScripts()
 end
 
 MakeFoldersAndScripts()
-
 
 
