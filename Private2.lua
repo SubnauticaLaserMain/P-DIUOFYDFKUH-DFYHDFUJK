@@ -1,3 +1,26 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/UI-Libraries/main/Vynixius/Source.lua"))()
+
+
+local Window = Library:AddWindow({
+    title = {'ServerScriptAPI', 'BETA'},
+    theme = {
+        Accent = Color3.fromRGB(34, 255, 0)
+    },
+    key = Enum.KeyCode.RightControl,
+	default = true
+})
+
+
+
+-- Define Tabs
+local MainTab = Window:AddTab('Main', {default = false})
+
+
+
+
+
+
+
 local CorePackages = game:GetService('CorePackages')
 local CoreGui = game:GetService('CoreGui')
 
@@ -144,7 +167,7 @@ local function MakeFoldersAndScripts()
 
                 function ChatModules:SendPlayerMessage(Message)
                     if IsNewChat then
-                        TextChatService.ChatInputBarConfiguration.TargetTextChannel:FireServer(Message)
+                        TextChatService.ChatInputBarConfiguration.TargetTextChannel:SendAsync(Message)
                     else
                         ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Message, 'All')
                     end
@@ -171,6 +194,147 @@ local function MakeFoldersAndScripts()
                 return ChatServic
             end
         }
+
+
+
+        local GamesSupportedData = new('Folder', MainFolder)
+        GamesSupportedData.Name = 'Games-Supported Data'
+
+
+        local BreakIn_Datas = new('Folder', GamesSupportedData)
+        BreakIn_Datas.Name = 'Break-In-Data'
+
+
+        local BreakIn1_Data = new('ModuleScript', BreakIn_Datas)
+        BreakIn1_Data.Name = 'Break-In-Data'
+    
+
+
+        local BreakIn1_LobbyData = new('ModuleScript', BreakIn1_Data)
+        BreakIn1_LobbyData.Name = 'Lobby'
+
+        Modules[BreakIn1_LobbyData] = {
+            ['Closure'] = function()
+                local Data = {}
+
+                
+                Data.EquipRole = function(Role, RoleData)
+                    local MakeRole = game:GetService('ReplicatedStorage'):WaitForChild('RemoteEvents').MakeRole
+                    local OutsideRole = game:GetService('ReplicatedStorage'):WaitForChild('RemoteEvents').OutsideRole
+
+
+
+                    if Role and RoleData then
+                        if Role == 'The Swat' then
+                            local RData = {
+                                [1] = 'SwatGun',
+                                [2] = false,
+                                [3] = RoleData.IsUsingSkin
+                            }
+
+                            local OutsideData = {
+                                [1] = RData[1],
+                                [2] = RData[3]
+                            }
+
+
+                            OutsideRole:FireServer(unpack(OutsideData))
+                            MakeRole:FireServer(unpack(RData))
+                        elseif Role == 'The Officer' then
+                            local RData = {
+                                [1] = 'Gun',
+                                [2] = false,
+                                [3] = RoleData.IsUsingSkin
+                            }
+
+                            local OutsideData = {
+                                [1] = RData[1],
+                                [2] = RData[3]
+                            }
+
+
+                            OutsideRole:FireServer(unpack(OutsideData))
+                            MakeRole:FireServer(unpack(RData))
+                        elseif Role == 'The Medic' then
+                            local RData = {
+                                [1] = 'MedKit',
+                                [2] = false,
+                                [3] = RoleData.IsUsingSkin
+                            }
+
+
+
+                            MakeRole:FireServer(unpack(RData))
+                        elseif Role == 'The Protector' then
+                            local RData = {
+                                [1] = 'Bat',
+                                [2] = false,
+                                [3] = RoleData.IsUsingSkin
+                            }
+
+
+
+                            MakeRole:FireServer(unpack(RData))
+                        elseif Role == 'The Stealthy' then
+                            local RData = {
+                                [1] = 'TeddyBloxpin',
+                                [2] = true,
+                                [3] = RoleData.IsUsingSkin
+                            }
+
+
+
+                            MakeRole:FireServer(unpack(RData))
+                        elseif Role == 'The Hungry' then
+                            local RData = {
+                                [1] = 'Chips',
+                                [2] = true,
+                                [3] = RoleData.IsUsingSkin
+                            }
+
+
+
+                            MakeRole:FireServer(unpack(RData))
+                        elseif Role == 'The Fighter' then
+                            local RData = {
+                                [1] = 'Sword',
+                                [2] = true,
+                                [3] = RoleData.IsUsingSkin
+                            }
+
+
+                            local OutsideData = {
+                                [1] = RData[1],
+                                [2] = RData[3]
+                            }
+
+
+                            OutsideRole:FireServer(unpack(OutsideData))
+                            MakeRole:FireServer(unpack(RData))
+                        end
+                    end
+                end
+
+
+                return Data
+            end
+        }
+    
+
+
+
+
+        Modules[BreakIn1_Data] = {
+            ['Closure'] = function()
+                local Data = {}
+
+
+
+                return Data
+            end
+        }
+
+
 
 
 
@@ -231,19 +395,62 @@ local function MakeFoldersAndScripts()
             end)
 
             PlayerService.PlayerRemoved(function(plr)
-                if plr.Character:FindFirstChild('ESP-Part') then
-                    local Character = plr.Character or plr.CharacterAdded:Wait()
+                if plr.Character then
+                    if plr.Character:FindFirstChild('ESP-Part') then
+                        local Character = plr.Character or plr.CharacterAdded:Wait()
 
-                    Character['ESP-Part']:Destroy()
+                        Character['ESP-Part']:Destroy()
+                    end
                 end
             end)
         end
 
 
         task.spawn(ESPScript_Source)
+
+
+
+
+        local GuiLibrary_Controller = new('Script', MainFolder)
+        GuiLibrary_Controller.Name = 'GuiLibrary-Controller'
+
+
+        local function GuiLibrary_Controller_Source()
+            local script = GuiLibrary_Controller
+            
+
+
+            if game.PlaceId == 3851622790 then
+                local BreakInData = require(script.Parent['Games-Supported Data']['Break-In-Data']['Break-In-Data'].Lobby)
+
+
+                local RolesSection = MainTab:AddSection('Roles', {default = false})
+
+
+                local RoleSelected = nil
+                local RoleCustomeOn = false
+
+                
+                RolesSection:AddDropdown('Adults', {'The Protector', 'The Medic', 'The Officer', 'The Swat'}, {default = 'The Protector'}, function(selected)
+                    RoleSelected = selected
+                end)
+
+                RolesSection:AddToggle('Custome', {flag = 'Toggle_Flag', default = false}, function(On)
+                    RoleCustomeOn = On
+                end)
+
+
+                RolesSection:AddButton('Equip', function()
+                    if RoleSelected then
+                        BreakInData.EquipRole(selected, RoleCustomeOn)
+                    end
+                end)
+            end
+        end
+
+        task.spawn(GuiLibrary_Controller_Source)
     end
 end
 
 MakeFoldersAndScripts()
-
 
