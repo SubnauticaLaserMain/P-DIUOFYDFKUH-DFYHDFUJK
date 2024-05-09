@@ -1,7 +1,7 @@
 local MarketPlaceService = game:GetService('MarketplaceService')
 local UserInputService = game:GetService('UserInputService')
 local InsertService = game:GetService('InsertService')
-local CoreGui = game:GetService('CoreGui')
+local CorePackages = game:GetService('CorePackages')
 
 
 
@@ -19,8 +19,8 @@ end
 
 
 local function MakeFolders()
-    if not CoreGui:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
-        local MainFolder = new('Folder', CoreGui)
+    if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
+        local MainFolder = new('Folder', CorePackages)
         local PlayerHttpProvidor = new('Folder', MainFolder)
         local PlayerHttpProvidor_Modules = new('Folder', PlayerHttpProvidor)
 
@@ -39,14 +39,14 @@ end
 
 
 local function MakeModuleScripts()
-    if not CoreGui:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
+    if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
 
     end
 end
 
 
-if not CoreGui:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'):FindFirstChild('Player/ScreenShot-Providor') then
-    local Player_ScreenShot_Providor_Module = new('ModuleScript', CoreGui:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'))
+if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'):FindFirstChild('Player/ScreenShot-Providor') then
+    local Player_ScreenShot_Providor_Module = new('ModuleScript', CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'))
     Player_ScreenShot_Providor_Module.Name = 'Player/ScreenShot-Providor'
     
     --- Source
@@ -58,11 +58,11 @@ module.Name = 'OK'
 return module
     ]]
 else
-    CoreGui:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'):FindFirstChild('Player/ScreenShot-Providor'):Destroy()
+    CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'):FindFirstChild('Player/ScreenShot-Providor'):Destroy()
 
 
 
-    local Player_ScreenShot_Providor_Module = new('ModuleScript', CoreGui:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'))
+    local Player_ScreenShot_Providor_Module = new('ModuleScript', CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'))
 
     Player_ScreenShot_Providor_Module.Name = 'Player/ScreenShot-Providor'
 
@@ -74,5 +74,3 @@ module.Name = 'OK'
 return module
     ]]
 end
-
-
