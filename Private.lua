@@ -1,80 +1,143 @@
-local MarketPlaceService = game:GetService('MarketplaceService')
-local UserInputService = game:GetService('UserInputService')
-local InsertService = game:GetService('InsertService')
 local CorePackages = game:GetService('CorePackages')
+local CoreGui = game:GetService('CoreGui')
 
 
 
 
+local Modules = {}
+local REAL_REQUIRE = require
+local function require(Module: ModuleScript)
+    local ModuleState = Modules[Module]
+
+    if ModuleState then
+        if not ModuleState.Required then
+            ModuleState.Required = true
+            ModuleState.Value = ModuleState.Closure()
+        end
+
+        return ModuleState.Value
+    end
+
+    return REAL_REQUIRE(Module)
+end
 
 
 local function new(type, Parent)
-    if Parent then
-        return Instance.new(type, Parent)
-    else
-        return Instance.new(type)
+    if type then
+        if Parent then
+            return Instance.new(type, Parent)
+        else
+            return Instance.new(type)
+        end
     end
 end
 
 
 
-local function MakeFolders()
-    if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
-        local MainFolder = new('Folder', CorePackages)
-        local PlayerHttpProvidor = new('Folder', MainFolder)
-        local PlayerHttpProvidor_Modules = new('Folder', PlayerHttpProvidor)
-
-
+local function MakeFoldersAndScripts()
+    if not CoreGui:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
+        local MainFolder = new('Folder', CoreGui)
+        local PlayersScriptsFolder = new('Folder', MainFolder)
 
 
         MainFolder.Name = 'ServerScriptAPI-Source-MainFolder'
+        PlayersScriptsFolder.Name = 'Players-Scripts-Folder'
+        
 
-        PlayerHttpProvidor.Name = 'Player-Http-Providor'
+        
 
-        PlayerHttpProvidor_Modules.Name = 'Modules'
+        local PlayerEvent_Modules = new('ModuleScript', PlayersScriptsFolder)
+        PlayerEvent_Modules.Name = 'Player-Events'
+        Modules[PlayerEvent_Modules] = {
+            ['Closure'] = function()
+                local script = PlayerEvent_Modules
+                local PlayerService = game:GetService('Players')
+
+
+
+                local PlayerEvents_Module = {}
+
+
+
+                PlayerEvents_Module.PlayerAdding = function(func)
+                    return PlayerService.PlayerAdded:Connect(func)
+                end
+
+                PlayerEvents_Module.PlayerRemoved = function(func)
+                    return PlayerService.PlayerRemoving:Connect(func)
+                end
+
+                PlayerEvents_Module.GetPlayers = function()
+                    return Players:GetPlayers()
+                end
+
+
+                PlayerEvents_Module.LocalPlayer = PlayerService.LocalPlayer
+
+
+
+                return PlayerEvents_Module
+            end
+        }
+        
+
+
+
+        local ESPScript = new('Script', PlayersScriptsFolder)
+        ESPScript.Name = 'ESP-Script'
+        ESPScript.RunContext = Enum.RunContext.Client
+
+        local function ESPScript_Source()
+            local script = ESPScript
+            local PlayerService = require(script.Parent['Player-Events'])
+
+
+            local function new(type, Parent)
+                if type then
+                    if Parent then
+                        return Instance.new(type, Parent)
+                    else
+                        return Instance.new(type)
+                    end
+                end
+            end
+
+
+
+
+
+            for count, Player in pairs(PlayerService.GetPlayers()) do
+                if not Player:FindFirstChild('ESP-Part') then
+                    local ESP_Part = new('Highlight', Player)
+
+                    ESP_Part.Name = 'ESP-Part'
+                    ESP_Part.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                    ESP_Part.FillColor = Color3.new(1, 1, 1)
+                    ESP_Part.Enabled = true
+                    ESP_Part.FillTransparency = 1
+                    ESP_Part.OutlineColor = Color3.new(1, 1, 1)
+                    ESP_Part.OutlineTransparency = 0
+                end
+            end
+
+
+            PlayerService.PlayerAdding(function(plr)
+                local ESP_Part = new('Highlight', Player)
+
+                ESP_Part.Name = 'ESP-Part'
+                ESP_Part.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                ESP_Part.FillColor = Color3.new(1, 1, 1)
+                ESP_Part.Enabled = true
+                ESP_Part.FillTransparency = 1
+                ESP_Part.OutlineColor = Color3.new(1, 1, 1)
+                ESP_Part.OutlineTransparency = 0
+            end)
+
+            PlayerService.PlayerRemoved(function(plr)
+                if plr:FindFirstChild('ESP-Part') then
+                    plr['ESP-Part']:Destroy()
+                end
+            end)
+        end
     end
-
-    
-end
-
-
-if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
-    MakeFolders()
-end
-
-local function MakeModuleScripts()
-    if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
-
-    end
-end
-
-
-if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'):FindFirstChild('Player/ScreenShot-Providor') then
-    local Player_ScreenShot_Providor_Module = new('ModuleScript', CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'))
-    Player_ScreenShot_Providor_Module.Name = 'Player/ScreenShot-Providor'
-    
-    --- Source
-    Player_ScreenShot_Providor_Module.Source = [[
-local module = {}
-
-module.Name = 'OK'
-
-return module
-    ]]
-else
-    CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'):FindFirstChild('Player/ScreenShot-Providor'):Destroy()
-
-
-
-    local Player_ScreenShot_Providor_Module = new('ModuleScript', CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder'):FindFirstChild('Player-Http-Providor'):FindFirstChild('Modules'))
-
-    Player_ScreenShot_Providor_Module.Name = 'Player/ScreenShot-Providor'
-
-    Player_ScreenShot_Providor_Module.Source = [[
-local module = {}
-
-module.Name = 'OK'
-
-return module
-    ]]
 end
