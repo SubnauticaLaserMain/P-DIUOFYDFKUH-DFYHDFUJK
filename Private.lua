@@ -108,32 +108,28 @@ local function MakeFoldersAndScripts()
             for count, Player in pairs(PlayerService.GetPlayers()) do
                 if not Player:FindFirstChild('ESP-Part') then
                     local Character = Player.Character or Player.CharacterAdded:Wait()
-                    local ESP_Part = new('Highlight', Character)
-
-                    ESP_Part.Name = 'ESP-Part'
-                    ESP_Part.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-                    ESP_Part.FillColor = Color3.new(1, 1, 1)
-                    ESP_Part.Enabled = true
-                    ESP_Part.FillTransparency = 1
-                    ESP_Part.OutlineColor = Color3.new(1, 1, 1)
-                    ESP_Part.OutlineTransparency = 0
-                    ESP_Part.LineThickness = 0.5
+                    local a = new('Highlight', Character)
+	
+                    a.Name = 'ESP-Part'
+                    a.Enabled = true
+                    a.Adornee = Character
+                    a.OutlineColor = Color3.new(1, 1, 1)
+                    a.FillTransparency = 1
+                    a.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
                 end
             end
 
 
             PlayerService.PlayerAdding(function(plr)
                 local Character = plr.Character or plr.CharacterAdded:Wait()
-                local ESP_Part = new('Highlight', Character)
-
-                ESP_Part.Name = 'ESP-Part'
-                ESP_Part.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-                ESP_Part.FillColor = Color3.new(1, 1, 1)
-                ESP_Part.Enabled = true
-                ESP_Part.FillTransparency = 1
-                ESP_Part.OutlineColor = Color3.new(1, 1, 1)
-                ESP_Part.OutlineTransparency = 0
-                ESP_Part.LineThickness = 0.5
+                local a = new('Highlight', Character)
+	
+                a.Name = 'ESP-Part'
+                a.Enabled = true
+                a.Adornee = Character
+                a.OutlineColor = Color3.new(1, 1, 1)
+                a.FillTransparency = 1
+                a.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
             end)
 
             PlayerService.PlayerRemoved(function(plr)
@@ -151,3 +147,6 @@ local function MakeFoldersAndScripts()
 end
 
 MakeFoldersAndScripts()
+
+
+
