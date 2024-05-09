@@ -117,6 +117,7 @@ local function MakeFoldersAndScripts()
                     ESP_Part.FillTransparency = 1
                     ESP_Part.OutlineColor = Color3.new(1, 1, 1)
                     ESP_Part.OutlineTransparency = 0
+                    ESP_Part.LineThickness = 0.5
                 end
             end
 
@@ -132,10 +133,11 @@ local function MakeFoldersAndScripts()
                 ESP_Part.FillTransparency = 1
                 ESP_Part.OutlineColor = Color3.new(1, 1, 1)
                 ESP_Part.OutlineTransparency = 0
+                ESP_Part.LineThickness = 0.5
             end)
 
             PlayerService.PlayerRemoved(function(plr)
-                if plr:FindFirstChild('ESP-Part') then
+                if plr.Character:FindFirstChild('ESP-Part') then
                     local Character = plr.Character or plr.CharacterAdded:Wait()
 
                     Character['ESP-Part']:Destroy()
