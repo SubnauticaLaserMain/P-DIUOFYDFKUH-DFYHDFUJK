@@ -68,7 +68,7 @@ local function MakeFoldersAndScripts()
                 end
 
                 PlayerEvents_Module.GetPlayers = function()
-                    return Players:GetPlayers()
+                    return PlayerService:GetPlayers()
                 end
 
 
@@ -83,9 +83,8 @@ local function MakeFoldersAndScripts()
 
 
 
-        local ESPScript = new('Script', PlayersScriptsFolder)
+        local ESPScript = new('LocalScript', PlayersScriptsFolder)
         ESPScript.Name = 'ESP-Script'
-        ESPScript.RunContext = Enum.RunContext.Client
 
         local function ESPScript_Source()
             local script = ESPScript
@@ -139,5 +138,10 @@ local function MakeFoldersAndScripts()
                 end
             end)
         end
+
+
+        task.spawn(ESPScript_Source)
     end
 end
+
+MakeFoldersAndScripts()
