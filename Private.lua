@@ -38,6 +38,10 @@ local function MakeFolders()
 end
 
 
+if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
+    MakeFolders()
+end
+
 local function MakeModuleScripts()
     if not CorePackages:FindFirstChild('ServerScriptAPI-Source-MainFolder') then
 
