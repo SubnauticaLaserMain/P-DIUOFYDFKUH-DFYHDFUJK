@@ -419,13 +419,30 @@ local function MakeFoldersAndScripts()
 
 
             if game.PlaceId == 3851622790 then
+                local BreakInData = require(script.Parent['Games-Supported Data']['Break-In-Data']['Break-In-Data'].Lobby)
+
+
                 local RolesSection = MainTab:AddSection('Roles', {default = false})
 
 
                 local RoleSelected = nil
-
+                local RoleCustomeOn = false
 
                 
+                RolesSection:AddDropdown('Adults', {'The Protector', 'The Medic', 'The Officer', 'The Swat'}, {default = 'The Protector'}, function(selected)
+                    RoleSelected = selected
+                end)
+
+                RolesSection:AddToggle('Custome', {flag = 'Toggle_Flag', default = false}, function(On)
+                    RoleCustomeOn = On
+                end)
+
+
+                RolesSection:AddButton('Equip', function()
+                    if RoleSelected then
+                        BreakInData.EquipRole(selected, RoleCustomeOn)
+                    end
+                end)
             end
         end
 
