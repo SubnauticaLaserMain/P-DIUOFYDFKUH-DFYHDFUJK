@@ -107,7 +107,8 @@ local function MakeFoldersAndScripts()
 
             for count, Player in pairs(PlayerService.GetPlayers()) do
                 if not Player:FindFirstChild('ESP-Part') then
-                    local ESP_Part = new('Highlight', Player)
+                    local Character = Player.Character or Player.CharacterAdded:Wait()
+                    local ESP_Part = new('Highlight', Character)
 
                     ESP_Part.Name = 'ESP-Part'
                     ESP_Part.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
@@ -121,7 +122,8 @@ local function MakeFoldersAndScripts()
 
 
             PlayerService.PlayerAdding(function(plr)
-                local ESP_Part = new('Highlight', Player)
+                local Character = plr.Character or plr.CharacterAdded:Wait()
+                local ESP_Part = new('Highlight', Character)
 
                 ESP_Part.Name = 'ESP-Part'
                 ESP_Part.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
@@ -134,7 +136,9 @@ local function MakeFoldersAndScripts()
 
             PlayerService.PlayerRemoved(function(plr)
                 if plr:FindFirstChild('ESP-Part') then
-                    plr['ESP-Part']:Destroy()
+                    local Character = plr.Character or plr.CharacterAdded:Wait()
+
+                    Character['ESP-Part']:Destroy()
                 end
             end)
         end
