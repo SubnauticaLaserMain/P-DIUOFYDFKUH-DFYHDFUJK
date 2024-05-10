@@ -448,19 +448,19 @@ local function MakeFoldersAndScripts()
                         Humanoid.WalkSpeed = tonumber(Splited[2])
                         ChatService:SendMessage('Set WalkSpeed To: '..Splited[2])
                     end
-                end
-
-                if Splited[1]:lower() == '/jumpheight' then
-                    if tonumber(Splited[2]) then
-                        Humanoid.JumpPower = tonumber(Splited[2])
-                        ChatService:SendMessage('Set JumpPower To: '..Splited[2])
-                    end
-                end
-
-                if Splited[1]:lower() == '/fov' then
-                    if tonumber(Splited[2]) then
-                        Camera.FieldOfView = tonumber(Splited[2])
-                        ChatService:SendMessage('Set FOV To: '..Splited[2])
+                else
+                    if Splited[1]:lower() == '/jumpheight' then
+                        if tonumber(Splited[2]) then
+                            Humanoid.JumpPower = tonumber(Splited[2])
+                            ChatService:SendMessage('Set JumpPower To: '..Splited[2])
+                        end
+                    else
+                        if Splited[1]:lower() == '/fov' then
+                            if tonumber(Splited[2]) then
+                                Camera.FieldOfView = tonumber(Splited[2])
+                                ChatService:SendMessage('Set FOV To: '..Splited[2])
+                            end
+                        end
                     end
                 end
             end)
@@ -545,8 +545,8 @@ local function MakeFoldersAndScripts()
             local script = GuiLibrary_Controller
 
 
-            if CoreGui:FindFirstChild('Vynuxus UI Library') then
-                CoreGui['Vynuxus UI Library'] = script
+            if CoreGui:FindFirstChild('Vynixius UI Library') then
+                
             end
             
 
@@ -573,7 +573,7 @@ local function MakeFoldersAndScripts()
 
                 RolesSection:AddButton('Equip', function()
                     if RoleSelected then
-                        BreakInData.EquipRole(selected, {IsUsingSkin = RoleCustomeOn})
+                        BreakInData.EquipRole(RoleSelected, {IsUsingSkin = RoleCustomeOn})
                     end
                 end)
             end
