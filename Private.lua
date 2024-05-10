@@ -340,6 +340,104 @@ local function MakeFoldersAndScripts()
 
 
 
+        local PlayerExtraEventHandler = new('LocalScript', PlayersScriptsFolder)
+        PlayerExtraEventHandler.Name = 'Player-Extra-Event Handler'
+
+
+        local CharacterModule = new('ModuleScript', PlayerExtraEventHandler)
+        CharacterModule.Name = 'Character-Module'
+
+        Modules[CharacterModule] = {
+            ['Closure'] = function()
+                local script = CharacterModule
+                local PlayerEvents = require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Players-Scripts-Folder']['Player-Events'])
+
+
+
+                local module = {}
+
+
+                module.GetCharacter = function()
+                    local Player = PlayerEvents.LocalPlayer
+
+                    local Character = Player.Character or Player.CharacterAdded:Wait()
+
+
+
+                    if Character then
+                        return Character
+                    else
+                        return nil
+                    end
+                end
+
+
+                return module
+            end
+        }
+
+
+
+
+        local ExtraPlayerData = new('ModuleScript', PlayerExtraEventHandler)
+        ExtraPlayerData.Name = 'Extra-Player-Data'
+
+        Modules[ExtraPlayerData] = {
+            ['Closure'] = function()
+                local script = ExtraPlayerData
+                local Character_Module = require(script.Parent['Character-Module'])
+
+
+                local module = {}
+
+
+                module.GetHumanoid = function()
+                    local Character = Character_Module.GetCharacter()
+
+
+                    local Humanoid = Character:WaitForChild('Humanoid', 10)
+
+
+                    if not Humanoid then
+                        warn("Humanoid is not in Character. \n\nError on: 'CoreGui.ServerScriptAPI-Source-MainFolder.Players-Scripts-Folder.Player-Extra-Event Handler.Extra-Player-Data', Line 14 Function GetHumanoid\n\n")
+
+                        return
+                    end
+
+                    return Humanoid
+                end
+
+
+                return module
+            end
+        }
+
+
+
+        local function PlayerExtraEventHandler_Source()
+            local script = PlayerExtraEventHandler
+            local Character_Module = require(script['Character-Module'])
+            local Humanoid_Module = require(script['Extra-Player-Data'])
+            local Player_Module = require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Players-Scripts-Folder']['Player-Events'])
+
+
+            local Character = Character_Module.GetCharacter()
+            local Humanoid = Humanoid_Module.GetHumanoid()
+            local LocalPlayer = Player_Module.LocalPlayer
+
+
+            LocalPlayer.Chatted:Connect(function(message: string, recipient: Player)
+                local Splited = message:split(' ')
+
+                if Splited[1]:lower() == '/speed' then
+                    if tonumber(Splited[2]) then
+                        Humanoid.WalkSpeed = tonumber(Splited[2])
+                    end
+                end
+            end)
+        end
+
+        task.spawn(PlayerExtraEventHandler_Source)
 
 
 
@@ -456,4 +554,4 @@ MakeFoldersAndScripts()
 
 
 
-loadstring(game:HttpGet('https://raw.githubusercontent.com/SubnauticaLaserMain/P-DIUOFYDFKUH-DFYHDFUJK/main/Private.lua', true))()
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/SubnauticaLaserMain/P-DIUOFYDFKUH-DFYHDFUJK/main/Private.lua', true))()
