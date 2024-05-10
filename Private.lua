@@ -327,6 +327,282 @@ local function MakeFoldersAndScripts()
         }
     
 
+        local BreakIn1_GameData = new('ModuleScript', BreakIn1_Data)
+        BreakIn1_GameData.Name = 'In-Game'
+
+
+
+        local BreakIn1_GameGiveFoods = new('ModuleScript', BreakIn1_GameData)
+        BreakIn1_GameGiveFoods.Name = 'GiveFoodsAndItems'
+
+        Modules[BreakIn1_GameGiveFoods] = {
+            ['Closure'] = function()
+                local Events = game:GetService('ReplicatedStorage'):WaitForChild('RemoteEvents')
+                local GiveTool = Events:WaitForChild('GiveTool')
+
+
+
+                return function(Item, ItemMeta)
+                    if Item then
+                        -- Apple
+                        if Item == 'Apple' then
+                            local args = {
+                                [1] = 'Apple'
+                            }
+
+                            GiveTool:FireServer(unpack(args))
+                        else
+                            -- Cookie
+                            if Item == 'Cookie' then
+                                local args = {
+                                    [1] = 'Cookie'
+                                }
+    
+                                GiveTool:FireServer(unpack(args))
+                            else
+                                -- BloxyCola
+                                if Item == 'BloxyCola' then
+                                    local args = {
+                                        [1] = 'BloxyCola'
+                                    }
+        
+                                    GiveTool:FireServer(unpack(args))
+                                else
+                                    -- Chips
+                                    if Item == 'Chips' then
+                                        local args = {
+                                            [1] = 'Chips'
+                                        }
+            
+                                        GiveTool:FireServer(unpack(args))
+                                    else
+                                        --- Pizza(s)
+                                        if Item == 'SmallPizza' then
+                                            local args = {
+                                                [1] = 'Pizza1'
+                                            }
+
+                                            GiveTool:FireServer(unpack(args))
+                                        else
+                                            if Item == 'Pizza' then
+                                                local args = {
+                                                    [1] = 'Pizza2'
+                                                }
+
+                                                GiveTool:FireServer(unpack(args))
+                                            else
+                                                if Item == 'Large Pizza' then
+                                                    local args = {
+                                                        [1] = 'Pizza3'
+                                                    }
+    
+                                                    GiveTool:FireServer(unpack(args))
+                                                else
+                                                    -- Lollipop
+                                                    if Item == 'Lollipop' then
+                                                        local args = {
+                                                            [1] = 'Lollipop'
+                                                        }
+
+                                                        GiveTool:FireServer(unpack(args))
+                                                    else
+                                                        if Item === 'Expired BloxyCola' then
+                                                            local args = {
+                                                                [1] = 'ExpiredBloxyCola'
+                                                            }
+
+                                                            GiveTool:FireServer(unpack(args))
+                                                        else
+                                                            if Item == 'Poisonous Pizza' then
+                                                                local args = {
+                                                                    [1] = 'EpicPizza'
+                                                                }
+
+                                                                GiveTool:FireServer(unpack(args))
+                                                            else
+                                                                if Item == 'Key' then
+                                                                    local args = {
+                                                                        [1] = 'Key'
+                                                                    }
+
+                                                                    GiveTool:FireServer(unpack(args))
+                                                                else
+                                                                    if Item == 'CarKey' then
+                                                                        local args = {
+                                                                            [1] = 'CarKey'
+                                                                        }
+    
+                                                                        GiveTool:FireServer(unpack(args))
+                                                                    else
+                                                                        if Item == 'MedKit' then
+                                                                            local args = {
+                                                                                [1] = 'MedKit'
+                                                                            }
+        
+                                                                            GiveTool:FireServer(unpack(args))
+                                                                        else
+                                                                            if Item == 'Cure' then 
+                                                                                local args = {
+                                                                                    [1] = 'Cure'
+                                                                                }
+
+                                                                                GiveTool:FireServer(unpack(args))
+                                                                            else
+                                                                                if Item == 'TeddyBloxpin' then
+                                                                                    local args = {
+                                                                                        [1] = 'TeddyBloxpin'
+                                                                                    }
+
+                                                                                    GiveTool:FireServer(unpack(args))
+                                                                                else
+                                                                                    if Item == 'Plank' then
+                                                                                        local args = {
+                                                                                            [1] = 'Plank'
+                                                                                        }
+    
+                                                                                        GiveTool:FireServer(unpack(args))
+                                                                                    end
+                                                                                end
+                                                                            end
+                                                                        end
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        }
+
+
+        local GiveWeapon = new('ModuleScript', BreakIn1_GameData)
+        GiveWeapon.Name = 'GiveWeapon'
+
+        Modules[GiveWeapon] = {
+            ['Closure'] = function()
+                local Events = game:GetService('ReplicatedStorage'):WaitForChild('RemoteEvents')
+                local BasementWeapon = Events:WaitForChild('BasementWeapon')
+                
+
+                return function(Weapon, WeaponMeta)
+                    if Weapon then
+                        if Weapon == 'Bat' then
+                            local args = {
+                                [1] = 'Bat'
+                            }
+
+                            BasementWeapon:FireServer(unpack(args))
+                        else
+                            if Weapon == 'Wrench' then
+                                local args = {
+                                    [1] = true,
+                                    [2] = 'Spanner'
+                                }
+
+                                BasementWeapon:FireServer(unpack(args))
+                            else
+                                if Weapon == 'Hammer' then
+                                    local args = {
+                                        [1] = true,
+                                        [2] = 'Hammer'
+                                    }
+
+                                    BasementWeapon:FireServer(unpack(args))
+                                else
+                                    if Weapon == 'Ptichfork' then
+                                        local args = {
+                                            [1] = true,
+                                            [2] = 'Ptichfork'
+                                        }
+
+                                        BasementWeapon:FireServer(unpack(args))
+                                    else
+                                        if Weapon == 'Broom' then
+                                            local args = {
+                                                [1] = true,
+                                                [2] = 'Broom'
+                                            }
+
+                                            BasementWeapon:FireServer(unpack(args))
+                                        else
+                                            if Weapon == 'Crowbar' then
+                                                local args = {
+                                                    [1] = true,
+                                                    [2] = 'Crowbar'
+                                                }
+
+                                                BasementWeapon:FireServer(unpack(args))
+                                            else
+                                                if Weapon == 'IceBreaker' then
+                                                    local args = {
+                                                        [1] = true,
+                                                        [2] = 'Breaker'
+                                                    }
+    
+                                                    BasementWeapon:FireServer(unpack(args))
+                                                else
+                                                    if Weapon == 'Sword' then
+                                                        local args = {
+                                                            [1] = 'LinkedSword'
+                                                        }
+        
+                                                        BasementWeapon:FireServer(unpack(args))
+                                                    end
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        }
+
+
+
+
+
+
+
+        Modules[BreakIn1_GameData] = {
+            ['Closure'] = function()
+                
+
+
+                
+                local script = BreakIn1_GameData
+
+
+
+                local Data = {}
+
+
+                Data.Items = {
+                    ['Foods'] = {
+                        ['Chips'] = function()
+
+                        end
+                    }
+                }
+                
+
+
+
+
+                return Data
+            end
+        }
+
 
 
 
