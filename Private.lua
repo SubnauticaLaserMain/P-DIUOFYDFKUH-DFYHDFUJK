@@ -188,7 +188,13 @@ local function MakeFoldersAndScripts()
                 local ChatServic = {}
 
 
-                ChatService:SendPlayerMessage('XD')
+                function ChatServic:SendMessage(Message)
+                    ChatService:SendMessage(Message)
+                end
+
+                function ChatServic:MakePlayerChat(Message)
+                    ChatService:SendPlayerMessage(Message)
+                end
 
 
                 return ChatServic
@@ -407,6 +413,12 @@ local function MakeFoldersAndScripts()
                     return Humanoid
                 end
 
+                module.GetCurrentCamera = function()
+                    if workspace and workspace.CurrentCamera and typeof(workspace.CurrentCamera) == 'Camera' then
+                        return workspace.CurrentCamera
+                    end
+                end
+
 
                 return module
             end
@@ -417,13 +429,15 @@ local function MakeFoldersAndScripts()
         local function PlayerExtraEventHandler_Source()
             local script = PlayerExtraEventHandler
             local Character_Module = require(script['Character-Module'])
-            local Humanoid_Module = require(script['Extra-Player-Data'])
+            local Extra_Module = require(script['Extra-Player-Data'])
             local Player_Module = require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Players-Scripts-Folder']['Player-Events'])
+            local ChatService = require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Roblox-Storage'].ChatModule)
 
 
             local Character = Character_Module.GetCharacter()
-            local Humanoid = Humanoid_Module.GetHumanoid()
+            local Humanoid = Extra_Module.GetHumanoid()
             local LocalPlayer = Player_Module.LocalPlayer
+            local Camera = Extra_Module.GetCurrentCamera()
 
 
             LocalPlayer.Chatted:Connect(function(message: string, recipient: Player)
@@ -432,6 +446,21 @@ local function MakeFoldersAndScripts()
                 if Splited[1]:lower() == '/speed' then
                     if tonumber(Splited[2]) then
                         Humanoid.WalkSpeed = tonumber(Splited[2])
+                        ChatService:SendMessage('Set WalkSpeed To: '..Splited[2])
+                    end
+                end
+
+                if Splited[1]:lower() == '/jumpheight' then
+                    if tonumber(Splited[2]) then
+                        Humanoid.JumpPower = tonumber(Splited[2])
+                        ChatService:SendMessage('Set JumpPower To: '..Splited[2])
+                    end
+                end
+
+                if Splited[1]:lower() == '/fov' then
+                    if tonumber(Splited[2]) then
+                        Camera.FieldOfView = tonumber(Splited[2])
+                        ChatService:SendMessage('Set FOV To: '..Splited[2])
                     end
                 end
             end)
@@ -448,7 +477,6 @@ local function MakeFoldersAndScripts()
         local function ESPScript_Source()
             local script = ESPScript
             local PlayerService = require(script.Parent['Player-Events'])
-            require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Roblox-Storage'].ChatModule)
 
 
             local function new(type, Parent)
@@ -515,6 +543,11 @@ local function MakeFoldersAndScripts()
 
         local function GuiLibrary_Controller_Source()
             local script = GuiLibrary_Controller
+
+
+            if CoreGui:FindFirstChild('Vynuxus UI Library') then
+                CoreGui['Vynuxus UI Library'] = script
+            end
             
 
 
