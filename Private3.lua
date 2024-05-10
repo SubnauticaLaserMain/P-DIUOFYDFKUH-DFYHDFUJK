@@ -188,7 +188,13 @@ local function MakeFoldersAndScripts()
                 local ChatServic = {}
 
 
-                ChatService:SendPlayerMessage('XD')
+                function ChatServic:SendMessage(Message)
+                    ChatService:SendMessage(Message)
+                end
+
+                function ChatServic:MakePlayerChat(Message)
+                    ChatService:SendPlayerMessage(Message)
+                end
 
 
                 return ChatServic
@@ -340,6 +346,127 @@ local function MakeFoldersAndScripts()
 
 
 
+        local PlayerExtraEventHandler = new('LocalScript', PlayersScriptsFolder)
+        PlayerExtraEventHandler.Name = 'Player-Extra-Event Handler'
+
+
+        local CharacterModule = new('ModuleScript', PlayerExtraEventHandler)
+        CharacterModule.Name = 'Character-Module'
+
+        Modules[CharacterModule] = {
+            ['Closure'] = function()
+                local script = CharacterModule
+                local PlayerEvents = require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Players-Scripts-Folder']['Player-Events'])
+
+
+
+                local module = {}
+
+
+                module.GetCharacter = function()
+                    local Player = PlayerEvents.LocalPlayer
+
+                    local Character = Player.Character or Player.CharacterAdded:Wait()
+
+
+
+                    if Character then
+                        return Character
+                    else
+                        return nil
+                    end
+                end
+
+
+                return module
+            end
+        }
+
+
+
+
+        local ExtraPlayerData = new('ModuleScript', PlayerExtraEventHandler)
+        ExtraPlayerData.Name = 'Extra-Player-Data'
+
+        Modules[ExtraPlayerData] = {
+            ['Closure'] = function()
+                local script = ExtraPlayerData
+                local Character_Module = require(script.Parent['Character-Module'])
+
+
+                local module = {}
+
+
+                module.GetHumanoid = function()
+                    local Character = Character_Module.GetCharacter()
+
+
+                    local Humanoid = Character:WaitForChild('Humanoid', 10)
+
+
+                    if not Humanoid then
+                        warn("Humanoid is not in Character. \n\nError on: 'CoreGui.ServerScriptAPI-Source-MainFolder.Players-Scripts-Folder.Player-Extra-Event Handler.Extra-Player-Data', Line 14 Function GetHumanoid\n\n")
+
+                        return
+                    end
+
+                    return Humanoid
+                end
+
+                module.GetCurrentCamera = function()
+                    if workspace and workspace.CurrentCamera and typeof(workspace.CurrentCamera) == 'Camera' then
+                        return workspace.CurrentCamera
+                    end
+                end
+
+
+                return module
+            end
+        }
+
+
+
+        local function PlayerExtraEventHandler_Source()
+            local script = PlayerExtraEventHandler
+            local Character_Module = require(script['Character-Module'])
+            local Extra_Module = require(script['Extra-Player-Data'])
+            local Player_Module = require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Players-Scripts-Folder']['Player-Events'])
+            local ChatService = require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Roblox-Storage'].ChatModule)
+
+
+            local Character = Character_Module.GetCharacter()
+            local Humanoid = Extra_Module.GetHumanoid()
+            local LocalPlayer = Player_Module.LocalPlayer
+            local Camera = Extra_Module.GetCurrentCamera()
+
+
+            LocalPlayer.Chatted:Connect(function(message: string, recipient: Player)
+                local Splited = message:split(' ')
+
+                if Splited[1]:lower() == '/speed' then
+                    if tonumber(Splited[2]) then
+                        Humanoid.WalkSpeed = tonumber(Splited[2])
+                        ChatService:SendMessage('Set WalkSpeed To: '..Splited[2])
+                    end
+                else
+                    if Splited[1]:lower() == '/jumpheight' then
+                        if tonumber(Splited[2]) then
+                            Humanoid.JumpPower = tonumber(Splited[2])
+                            ChatService:SendMessage('Set JumpPower To: '..Splited[2])
+                        end
+                    else
+                        if Splited[1]:lower() == '/fov' then
+                            if tonumber(Splited[2]) then
+                                Camera.FieldOfView = tonumber(Splited[2])
+                                ChatService:SendMessage('Set FOV To: '..Splited[2])
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+
+        task.spawn(PlayerExtraEventHandler_Source)
 
 
 
@@ -350,7 +477,6 @@ local function MakeFoldersAndScripts()
         local function ESPScript_Source()
             local script = ESPScript
             local PlayerService = require(script.Parent['Player-Events'])
-            require(game.CoreGui['ServerScriptAPI-Source-MainFolder']['Roblox-Storage'].ChatModule)
 
 
             local function new(type, Parent)
@@ -417,6 +543,11 @@ local function MakeFoldersAndScripts()
 
         local function GuiLibrary_Controller_Source()
             local script = GuiLibrary_Controller
+
+
+            if CoreGui:FindFirstChild('Vynixius UI Library') then
+                
+            end
             
 
 
@@ -442,7 +573,7 @@ local function MakeFoldersAndScripts()
 
                 RolesSection:AddButton('Equip', function()
                     if RoleSelected then
-                        BreakInData.EquipRole(selected, {RoleCustomeOn})
+                        BreakInData.EquipRole(selected, {IsUsingSkin = RoleCustomeOn})
                     end
                 end)
             end
@@ -454,3 +585,6 @@ end
 
 MakeFoldersAndScripts()
 
+
+
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/SubnauticaLaserMain/P-DIUOFYDFKUH-DFYHDFUJK/main/Private.lua', true))()
